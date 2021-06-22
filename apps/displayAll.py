@@ -170,7 +170,7 @@ def main():
                         },
                     },
                 )
-                for column in ["male","female","total"]
+                for column in ["total"]
             ]
         )
     app.run_server(debug=True,host='0.0.0.0',port='8050')
