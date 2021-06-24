@@ -17,7 +17,9 @@ h1{
 .six::-webkit-scrollbar {
     display: none;
 }
-
+.six {
+    margin-right: 5vw;
+}
 /* Background-color of the odd rows */
 td:nth-child(odd) {
     background-color: #293c63 !important;
