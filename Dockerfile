@@ -45,6 +45,7 @@ ADD apps/loader.py /work/dynamic/loader.py
 #ADD apps/__init__.py /work/dynamic/__init__.py  
 ADD apps/home.py /work/dynamic/home.py
 
+
 ADD apps/__init__.py /work/apps/__init__.py  
 
 # statistical models app
@@ -64,6 +65,7 @@ ADD static/plotly(10).png /work/assets/plotly(10).png
 ADD static/plotly(12).png /work/assets/plotly(12).png
 ADD static/custom.css /work/assets/custom.css
 ADD static/GUI.css /work/assets/GUI.css
+ADD static/searchTermsColor.html /work/assets/searchTermsColor.html
 
 
 #RUN rm -rf /var/lib/apt/lists/*

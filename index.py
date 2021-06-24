@@ -3,8 +3,9 @@ from dash.dependencies import Input, Output
 import dash_core_components as dcc
 import dash_html_components as html
 from app import app
-from apps import app1, app2, app3, app4, app5, app6, app7, app8, app_html
+from apps import app1, app2, app3, app5, app6, app7, app8
 from apps.dask_dash_app3 import app_sm
+
 #import dash_table_experiments as dt
 import base64
 import os
@@ -47,7 +48,7 @@ app.layout = html.Div([html.Link(
     #                      href="/apps/app1", children="Home")),
     #                  html.Li(children=html.A(
     #                      href="/apps/app3", children="Visualization")),
-    #                  html.Li(children=html.A(href="/apps/app4",
+    #                  html.Li(children=html.A(href="/assets/searchTermsColor.html",
     #                                          children="Natural Language Processing")),
     #                  # html.Li(children=html.A(href="/apps/app4",children="app4")),
     #                  # html.Li(children=html.A(href="/apps/app5",children="app5")),
@@ -64,12 +65,14 @@ app.layout = html.Div([html.Link(
     [
         dbc.Nav(
             [
+                dbc.NavItem(dbc.NavLink(
+                    "Analytics App", active=True, href="#", className="navbar-brand")),
                 dbc.NavLink("Home", href="/apps/app1",
                             className="text-right vertical-center"),
                 dbc.NavLink("Visualization", href="/apps/app3",
                             className="text-right vertical-center"),
                 dbc.NavLink("Natural Language Processing",
-                            href="/apps/app4", className="text-right vertical-center"),
+                            href="/assets/searchTermsColor.html", className="text-right vertical-center", external_link=True,),
                 dbc.NavLink("Statistical Models",
                             href="/apps/dask_dash_app3/app_sm", className="text-right vertical-center"),
                 dbc.NavLink("Machine Learning", href="/apps/app6",
@@ -91,8 +94,8 @@ def display_page(pathname):
         return app1.layout()
     elif pathname == '/apps/app3':
         return app3.layout3()
-    elif pathname == '/apps/app4':
-        return app4.layout4()
+    elif pathname == '/static/searchTermsColor.html':
+        return searchTermsColor
     elif pathname == '/apps/dask_dash_app3/app_sm':
         return app_sm.layout()
     elif pathname == '/apps/app6':
