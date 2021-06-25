@@ -6,32 +6,13 @@ from app import app
 from apps import app1, app2, app3, app5, app6, app7, app8
 from apps.dask_dash_app3 import app_sm
 
-#import dash_table_experiments as dt
+# import dash_table_experiments as dt
 import base64
 import os
 from flask import send_from_directory
 
 
 server = app.server
-
-nav = html.Div(
-    [
-        dbc.Nav(
-            [
-                dbc.NavLink("Internal link", href="/l/components/nav"),
-                dbc.NavLink("External link", href="https://github.com"),
-                dbc.NavLink(
-                    "External relative",
-                    href="/l/components/nav",
-                    external_link=True,
-                ),
-                dbc.NavLink("Button", id="button-link", n_clicks=0),
-            ]
-        ),
-        html.Br(),
-        html.P(id="button-clicks"),
-    ]
-)
 
 # after
 
@@ -63,24 +44,24 @@ app.layout = html.Div([html.Link(
     #          ])),
     html.Div(
     [
-        dbc.Nav(
+        dbc.Nav(dbc.Row(
             [
-                dbc.NavItem(dbc.NavLink(
-                    "Analytics App", active=True, href="#", className="navbar-brand")),
-                dbc.NavLink("Home", href="/apps/app1",
-                            className="text-right vertical-center"),
-                dbc.NavLink("Visualization", href="/apps/app3",
-                            className="text-right vertical-center"),
-                dbc.NavLink("Natural Language Processing",
-                            href="/assets/searchTermsColor.html", className="text-right vertical-center", external_link=True,),
-                dbc.NavLink("Statistical Models",
-                            href="/apps/dask_dash_app3/app_sm", className="text-right vertical-center"),
-                dbc.NavLink("Machine Learning", href="/apps/app6",
-                            className="text-right vertical-center"),
-                dbc.NavLink("Created using Dash by Plotly",
-                            href="https://plot.ly/products/dash/", className="text-right vertical-center", style={"float": "right"})
+                dbc.Col(dbc.NavLink(
+                    "Analytics App", active=True, href="#", className="navbar-brand vertical-center"), width="auto"),
+                dbc.Col(dbc.NavLink("Home", href="/apps/app1",
+                                    className="text-right vertical-center"), width="auto"),
+                dbc.Col(dbc.NavLink("Visualization", href="/apps/app3",
+                                    className="text-right vertical-center"), width="auto"),
+                dbc.Col(dbc.NavLink("Natural Language Processing",
+                                    href="/assets/searchTermsColor.html", className="text-right vertical-center", external_link=True,), width="auto"),
+                dbc.Col(dbc.NavLink("Statistical Models",
+                                    href="/apps/dask_dash_app3/app_sm", className="text-right vertical-center"), width="auto"),
+                dbc.Col(dbc.NavLink("Machine Learning", href="/apps/app6",
+                                    className="text-right vertical-center"), width="auto"),
+                dbc.Col(dbc.NavLink("Created using Dash by Plotly",
+                                    href="https://plot.ly/products/dash/", className="text-right vertical-center"), width={"size": "auto"})
             ]
-        ),
+        )),
         html.Br(),
         html.P(id="button-clicks"),
     ]),
@@ -108,7 +89,7 @@ def display_page(pathname):
     #     return app1.layout()
 
 
-@app.server.route('/dynamic/<path:path>')
+@ app.server.route('/dynamic/<path:path>')
 def static_file(path):
     static_folder = os.path.join(os.getcwd(), 'dynamic')
     return send_from_directory(dynamic, path)

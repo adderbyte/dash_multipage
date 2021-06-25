@@ -20,6 +20,11 @@ h1{
 .six {
     margin-right: 5vw;
 }
+.pie{
+    /* margin-left: 8vw; */
+    /* margin-right: 8vw; */
+    text-align: center;
+}
 /* Background-color of the odd rows */
 td:nth-child(odd) {
     background-color: #293c63 !important;

@@ -90,7 +90,7 @@ def layout3():
                 ]),
             html.Div(
                 id='table-paging-with-graph-container',
-                className="five columns"
+                className="pie"
             )
         ]
     )
