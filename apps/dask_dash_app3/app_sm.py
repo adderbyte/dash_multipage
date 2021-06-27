@@ -531,7 +531,8 @@ LDA_TABLE = html.Div(
 )
 
 LDA_PLOTS = [
-    dbc.CardHeader(html.H5("Regions of Participants")),
+    dbc.CardHeader(html.H4("Regions of Participants", style={'text-align': 'center', 'font-weight': 800}), style={
+                   "border-radius": "20px 20px 0px 0px"}),
     dbc.Alert(
         "Not enough data to render LDA plots, please adjust the filters",
         id="no-data-alert-lda",
@@ -555,7 +556,8 @@ LDA_PLOTS = [
     ),
 ]
 WORDCLOUD_PLOTS = [
-    dbc.CardHeader(html.H5("Most frequently used words in survey")),
+    dbc.CardHeader(html.H4("Most frequently used words in survey", style={'text-align': 'center', 'font-weight': 800}),
+                   style={"border-radius": "20px 20px 0px 0px"}),
     dbc.Alert(
         "Not enough data to render these plots, please adjust the filters",
         id="no-data-alert",
@@ -614,7 +616,8 @@ WORDCLOUD_PLOTS = [
 ]
 
 TOP_BANKS_PLOT = [
-    dbc.CardHeader(html.H5("Participants Distribution per country")),
+    dbc.CardHeader(html.H4("Participants Distribution per country", style={'text-align': 'center', 'font-weight': 800}), style={
+                   "border-radius": "20px 20px 0px 0px"}),
     dbc.CardBody(
         [
             dcc.Loading(
@@ -636,7 +639,8 @@ TOP_BANKS_PLOT = [
 ]
 
 TOP_BIGRAM_PLOT = [
-    dbc.CardHeader(html.H5("Participants Size By Profession")),
+    dbc.CardHeader(html.H4("Participants Size By Profession", style={'text-align': 'center', 'font-weight': 800}),
+                   style={"border-radius": "20px 20px 0px 0px"}),
     dbc.CardBody(
         [
             dcc.Loading(
@@ -676,7 +680,8 @@ TOP_BIGRAM_PLOT = [
 ]
 
 TOP_BIGRAM_COMPS = [
-    dbc.CardHeader(html.H5("Participants Club Choice per  Country")),
+    dbc.CardHeader(html.H4("Participants Club Choice per Country", style={'text-align': 'center', 'font-weight': 800}),
+                   style={"border-radius": "20px 20px 0px 0px"}),
     dbc.CardBody(
         [
             dcc.Loading(
@@ -725,25 +730,33 @@ TOP_BIGRAM_COMPS = [
                 type="default",
             )
         ],
-        style={"marginTop": 0, "marginBottom": 0},
+        style={"marginTop": 0, "marginBottom": 0, "border-radius": "30px"},
     ),
 ]
 
 BODY = dbc.Container(
     [
-        dbc.Row([dbc.Col(dbc.Card(TOP_BIGRAM_COMPS)), ],
+        dbc.Row([dbc.Col(dbc.Card(TOP_BIGRAM_COMPS, style={"border-radius": "20px", "box-shadow": "0px 0px 8px 8px #ebe9e8",
+                                                           "-webkit-box-shadow": "0px 0px 8px 8px #ebe9e8"}))],
                 style={"marginTop": 30}),
-        dbc.Row([dbc.Col(dbc.Card(TOP_BIGRAM_PLOT)), ],
+        dbc.Row([dbc.Col(dbc.Card(TOP_BIGRAM_PLOT, style={"border-radius": "20px", "box-shadow": "0px 0px 8px 8px #ebe9e8",
+                                                          "-webkit-box-shadow": "0px 0px 8px 8px #ebe9e8"})), ],
                 style={"marginTop": 30}),
         dbc.Row(
             [
                 dbc.Col(LEFT_COLUMN, md=4, align="center"),
-                dbc.Col(dbc.Card(TOP_BANKS_PLOT), md=8),
+                dbc.Col(dbc.Card(TOP_BANKS_PLOT, style={
+                        "border-radius": "20px", "box-shadow": "0px 0px 8px 8px #ebe9e8",
+                        "-webkit-box-shadow": "0px 0px 8px 8px #ebe9e8"}), md=8),
             ],
             style={"marginTop": 30},
         ),
-        dbc.Card(WORDCLOUD_PLOTS),
-        dbc.Row([dbc.Col([dbc.Card(LDA_PLOTS)])], style={"marginTop": 50}),
+        dbc.Card(WORDCLOUD_PLOTS, style={
+            "border-radius": "20px", "border-radius": "20px", "box-shadow": "0px 0px 8px 8px #ebe9e8",
+            "-webkit-box-shadow": "0px 0px 8px 8px #ebe9e8"}),
+        dbc.Row([dbc.Col([dbc.Card(LDA_PLOTS, style={
+                "border-radius": "20px", "border-radius": "20px", "box-shadow": "0px 0px 8px 8px #ebe9e8",
+                "-webkit-box-shadow": "0px 0px 8px 8px #ebe9e8"})])], style={"marginTop": 50, "marginBottom": 100}),
     ],
     className="mt-12",
 )
