@@ -1,233 +1,380 @@
-import dash
-import dash_core_components as dcc
-import dash_html_components as html
-import plotly.graph_objs as go
-import pandas as pd
-import dash_table
-from dash.dependencies import Input, Output
-from distributed import Client, LocalCluster
+# import dash
+# import dash_core_components as dcc
+# import dash_html_components as html
+# import plotly.graph_objs as go
+# import pandas as pd
+# import dash_table
+# from dash.dependencies import Input, Output
+# from distributed import Client, LocalCluster
 
-from app import app, cache
+# from app import app, cache
 
-import plotly.express as px
-from dynamic import loader
+# import plotly.express as px
+# from dynamic import loader
 
-import plotly.graph_objs as go
+# import plotly.graph_objs as go
 
-import os
+# import os
 
-PAGE_SIZE = 5
+# PAGE_SIZE = 5
 
-colors = {
-    'background': '#111111',
-    'text': '#7FDBFF'
-}
-
-
-@cache.memoize()
-def datas():
-    import modin.pandas as pd
-    # Dask Local Cluster
-    print("my present cwd  ", os.getcwd(),)
-    cluster = LocalCluster()
-    client = Client(cluster)
-    df = pd.read_csv("./assets/displaydata.csv", index_col=[0])
-    #df = px.data.iris()
-
-    return df
+# colors = {
+#     'background': '#111111',
+#     'text': '#7FDBFF'
+# }
 
 
-# storage
-caches = {"col": ['country names', 'female', 'male', 'no gender info', 'total', '10-20', '20-30',
-                  '30-40', '40-50', '50-above', 'no age info']}
+# @cache.memoize()
+# def datas():
+#     import modin.pandas as pd
+#     # Dask Local Cluster
+#     print("my present cwd  ", os.getcwd(),)
+#     cluster = LocalCluster()
+#     client = Client(cluster)
+#     df = pd.read_csv("./assets/displaydata.csv", index_col=[0])
+#     #df = px.data.iris()
+
+#     return df
 
 
-def layout3():
-
-    # layoutdis=
-    layoutdis = html.Div(
-        className="row",
-        children=[
-            html.H1("Survey Participants Analytics", style={
-                'textAlign': 'center',
-                'color': colors['background'],
-                'width': '100vw'
-            }),
-            html.Div(
-                className='six columns',
-                style={'height': 750, 'overflowY': 'scroll', 'width': '100vw'},
-                children=[
-                    html.Link(href='./assets/GUI.css', rel='stylesheet'),
-
-                    dash_table.DataTable(
-                        id='table-paging-with-graph',
-
-                        columns=[
-                            {"name": i, "id": i} for i in caches["col"]
-                        ],
-                        page_current=0,
-                        page_size=20,
-                        page_action='custom',
-
-                        filter_action='custom',
-                        filter_query='',
-                        style_cell=dict(
-                            textAlign='center', font_family="cursive", font_size='16px'),
-                        style_header=dict(
-                            backgroundColor="#97D987", font_family='sans-serif', font_size='20px'),
-                        style_data=dict(backgroundColor="#F3EDE0"),
-                        style_table=dict(width="auto", height="auto", marginLeft=19.8, marginRight=19.8
-                                         ),
-
-                        sort_action='custom',
-                        sort_mode='multi',
-                        sort_by=[],
-
-                        # fill_width=False,
-                    ),
+# # storage
+# caches = {"col": ['country names', 'female', 'male', 'total', '10-20', '20-30',
+#                   '30-40', '40-50', '50-above']}
 
 
-                ]),
-            html.Div(
-                id='table-paging-with-graph-container',
-                className="pie"
-            )
-        ]
-    )
-    return layoutdis
+# def layout3():
+
+#     # layoutdis=
+#     layoutdis = html.Div(
+#         className="row",
+#         children=[
+#             html.H1("Survey Participants Analytics", style={
+#                 'textAlign': 'center',
+#                 'color': colors['background'],
+#                 'width': '100vw',
+#                 "font-family": "'Fredoka One', cursive",
+#                 "font-size":"48px",
+#                 "margin-bottom":"35px"
+#             }),
+#             html.Div(
+#                 className='six columns',
+#                 style={'height': 750, 'overflowY': 'scroll', 'width': '100vw'},
+#                 children=[
+#                     html.Link(href='./assets/GUI.css', rel='stylesheet'),
+
+#                     dash_table.DataTable(
+#                         id='table-paging-with-graph',
+
+#                         columns=[
+#                             {"name": i, "id": i} for i in caches["col"]
+#                         ],
+#                         page_current=0,
+#                         page_size=20,
+#                         page_action='custom',
+
+#                         filter_action='custom',
+#                         filter_query='',
+#                         style_cell=dict(
+#                             textAlign='center', font_family="sans-serif", font_size='16px'),
+#                         style_header=dict(
+#                             backgroundColor="#97D987", font_family='sans-serif', font_size='20px'),
+#                         style_data=dict(backgroundColor="#F3EDE0"),
+#                         style_table=dict(width="auto", height="auto", marginLeft=19.8, marginRight=19.8
+#                                          ),
+
+#                         sort_action='custom',
+#                         sort_mode='multi',
+#                         sort_by=[],
+
+#                         # fill_width=False,
+#                     ),
+
+
+#                 ]),
+#             html.Div(
+#                 id='table-paging-with-graph-container',
+#                 className="pie"
+#             )
+#         ]
+#     )
+#     return layoutdis
+
+
+# # @app.callback(
+# #     Output("scatter-plot3", "figure"),
+# #     [Input("range-slider3", "value")])
+# # def update_bar_chart(slider_range):
+# #     low, high = slider_range
+# #     df = datas()
+# #     #dff  = loader.data()
+# #     print(df.head(),flush=True)
+# #     mask = (df['petal_width'] > low) & (df['petal_width'] < high)
+# #     fig = px.scatter(
+# #         df[mask], x="sepal_width", y="sepal_length",
+# #         color="species", size='petal_length',
+# #         hover_data=['petal_width'])
+# #     return fig
+
+
+# operators = [['ge ', '>='],
+#              ['le ', '<='],
+#              ['lt ', '<'],
+#              ['gt ', '>'],
+#              ['ne ', '!='],
+#              ['eq ', '='],
+#              ['contains '],
+#              ['datestartswith ']]
+
+
+# def split_filter_part(filter_part):
+#     for operator_type in operators:
+#         for operator in operator_type:
+#             if operator in filter_part:
+#                 name_part, value_part = filter_part.split(operator, 1)
+#                 name = name_part[name_part.find('{') + 1: name_part.rfind('}')]
+
+#                 value_part = value_part.strip()
+#                 v0 = value_part[0]
+#                 if (v0 == value_part[-1] and v0 in ("'", '"', '`')):
+#                     value = value_part[1: -1].replace('\\' + v0, v0)
+#                 else:
+#                     try:
+#                         value = float(value_part)
+#                     except ValueError:
+#                         value = value_part
+
+#                 # word operators need spaces after them in the filter string,
+#                 # but we don't want these later
+#                 return name, operator_type[0].strip(), value
+
+#     return [None] * 3
 
 
 # @app.callback(
-#     Output("scatter-plot3", "figure"),
-#     [Input("range-slider3", "value")])
-# def update_bar_chart(slider_range):
-#     low, high = slider_range
-#     df = datas()
-#     #dff  = loader.data()
-#     print(df.head(),flush=True)
-#     mask = (df['petal_width'] > low) & (df['petal_width'] < high)
-#     fig = px.scatter(
-#         df[mask], x="sepal_width", y="sepal_length",
-#         color="species", size='petal_length',
-#         hover_data=['petal_width'])
-#     return fig
+#     Output('table-paging-with-graph', "data"),
+#     [Input('table-paging-with-graph', "page_current"),
+#      Input('table-paging-with-graph', "page_size"),
+#      Input('table-paging-with-graph', "sort_by"),
+#      Input('table-paging-with-graph', "filter_query")])
+# def update_table(page_current, page_size, sort_by, filter):
+#     filtering_expressions = filter.split(' && ')
+#     dff = datas()
+#     dff.columns = caches["col"]
+#     for filter_part in filtering_expressions:
+#         col_name, operator, filter_value = split_filter_part(filter_part)
+
+#         if operator in ('eq', 'ne', 'lt', 'le', 'gt', 'ge'):
+#             # these operators match pandas series operator method names
+#             dff = dff.loc[getattr(dff[col_name], operator)(filter_value)]
+#         elif operator == 'contains':
+#             dff = dff.loc[dff[col_name].str.contains(filter_value)]
+#         elif operator == 'datestartswith':
+#             # this is a simplification of the front-end filtering logic,
+#             # only works with complete fields in standard format
+#             dff = dff.loc[dff[col_name].str.startswith(filter_value)]
+
+#     if len(sort_by):
+#         dff = dff.sort_values(
+#             [col['column_id'] for col in sort_by],
+#             ascending=[
+#                 col['direction'] == 'asc'
+#                 for col in sort_by
+#             ],
+#             inplace=False
+#         )
+
+#     return dff.iloc[
+#         page_current*page_size: (page_current + 1)*page_size
+#     ].to_dict('records')
 
 
-operators = [['ge ', '>='],
-             ['le ', '<='],
-             ['lt ', '<'],
-             ['gt ', '>'],
-             ['ne ', '!='],
-             ['eq ', '='],
-             ['contains '],
-             ['datestartswith ']]
+# @app.callback(
+#     Output('table-paging-with-graph-container', "children"),
+#     [Input('table-paging-with-graph', "data")])
+# def update_graph(rows):
+#     dff = pd.DataFrame(rows)
+
+#     return html.Div(
+#         [
+#             dcc.Graph(
+#                 id=column,
+#                 style={'display': 'inline-block', 'text-align': 'center'},
+#                 figure={
+#                     "data": [
+
+#                         # "x": dff[caches["col"][0]],
+#                         # "y": dff[column] if column in dff else [],
+#                         # "type": "pie",
+#                         # "marker": {"color": "#0074D9"},
+#                         # "color":dff["male"],
+#                         # 'line_color':'red',#dict(color='purple')
+#                         # "name": dff["countryNames"]
+
+#                         go.Pie(
+#                             labels=dff[caches["col"][0]],
+#                             values=dff[column] if column in dff else [],
+#                             #name= dff["country names"]
+#                         ),
+
+#                     ],
+#                     "layout": {
+#                         "xaxis": {"automargin": True},
+#                         "yaxis": {"automargin": True},
+#                         "height": 650,
+#                         "width": 650,
+#                         "margin": {"t": 30, "l": 30, "r": 30},
+#                         'title': column + " plot per country"
+#                         # "color":"female"
+#                     },
+#                 },
+#             )
+#             for column in ["male", "female", "total"]
+#         ]
+#     )
 
 
-def split_filter_part(filter_part):
-    for operator_type in operators:
-        for operator in operator_type:
-            if operator in filter_part:
-                name_part, value_part = filter_part.split(operator, 1)
-                name = name_part[name_part.find('{') + 1: name_part.rfind('}')]
+#new code without table
+import pandas as pd
+import numpy as np
+import dash
+from dash.dependencies import Input, Output
+import dash_core_components as dcc
+import dash_html_components as html
+import plotly.graph_objs as go
+import dash_bootstrap_components as dbc
+from app import app, cache
 
-                value_part = value_part.strip()
-                v0 = value_part[0]
-                if (v0 == value_part[-1] and v0 in ("'", '"', '`')):
-                    value = value_part[1: -1].replace('\\' + v0, v0)
-                else:
-                    try:
-                        value = float(value_part)
-                    except ValueError:
-                        value = value_part
+df = pd.read_csv('./assets/displaydata.csv')
+df.set_index('index')
+colors = {
+    'background': '#111111',
+    'text': 'teal'
+}
+# app = dash.Dash()
+years = np.array(['Oct-20', '20-30', '30-40', '40-50', '50-above'])
+genders = np.array(['female', 'male', 'total'])
 
-                # word operators need spaces after them in the filter string,
-                # but we don't want these later
-                return name, operator_type[0].strip(), value
-
-    return [None] * 3
-
-
-@app.callback(
-    Output('table-paging-with-graph', "data"),
-    [Input('table-paging-with-graph', "page_current"),
-     Input('table-paging-with-graph', "page_size"),
-     Input('table-paging-with-graph', "sort_by"),
-     Input('table-paging-with-graph', "filter_query")])
-def update_table(page_current, page_size, sort_by, filter):
-    filtering_expressions = filter.split(' && ')
-    dff = datas()
-    dff.columns = caches["col"]
-    for filter_part in filtering_expressions:
-        col_name, operator, filter_value = split_filter_part(filter_part)
-
-        if operator in ('eq', 'ne', 'lt', 'le', 'gt', 'ge'):
-            # these operators match pandas series operator method names
-            dff = dff.loc[getattr(dff[col_name], operator)(filter_value)]
-        elif operator == 'contains':
-            dff = dff.loc[dff[col_name].str.contains(filter_value)]
-        elif operator == 'datestartswith':
-            # this is a simplification of the front-end filtering logic,
-            # only works with complete fields in standard format
-            dff = dff.loc[dff[col_name].str.startswith(filter_value)]
-
-    if len(sort_by):
-        dff = dff.sort_values(
-            [col['column_id'] for col in sort_by],
-            ascending=[
-                col['direction'] == 'asc'
-                for col in sort_by
+BODY = dbc.Container(html.Div([
+        html.H1(
+            children='Survey Participants Analytics',
+            style={
+        'textAlign': 'center',
+        "font-family": "'Fredoka One', cursive",
+        "font-size": "30px",
+        "margin-bottom": "30px",
+        }
+        ),
+            dbc.CardBody(children =[html.Div([
+                dcc.Dropdown(
+                    id='state-id',
+                    options=[{'label': i, 'value': i} for i in df.countryNames.unique()], multi=True,
+                    value=['Turkey'],
+                    placeholder='Filter by region...'
+                ),
+                dcc.Dropdown(
+                    id='years-id',
+                    options=[{'label': i, 'value': i}
+                            for i in genders],
+                    value=['total'],
+                    multi=True, placeholder='Filter by sex ...'
+                ),
+                dcc.Graph(id='indicator-graphic',
+                    ),
+                
             ],
-            inplace=False
-        )
+                style={"border-radius": "20px", "box-shadow": "0px 0px 8px 8px #ebe9e8",
+                "-webkit-box-shadow": "0px 0px 8px 8px #ebe9e8","margin-bottom": "30px", "margin-top": "30px","padding":"1%"}),
+            
+            html.Br(), html.Br(),
+    ]),
+            dbc.CardBody(children =[html.Div([
+                dcc.Dropdown(
+                    id='state1-id',
+                    options=[{'label': i, 'value': i} for i in df.countryNames.unique()], multi=True,
+                    value=['Turkey'],
+                    placeholder='Filter by region...'
+                ),
+                dcc.Dropdown(
+                    id='age-id',
+                    options=[{'label': i, 'value': i}
+                            for i in years],
+                    value=['20-30'],
+                    multi=True, placeholder='Filter by age group ...'
+                ),
+                
+                dcc.Graph(id='indicator-graphic-1'
+                    ),
+                
+                
+            ],
+                style={"border-radius": "20px", "box-shadow": "0px 0px 8px 8px #ebe9e8",
+                "-webkit-box-shadow": "0px 0px 8px 8px #ebe9e8","padding":"1%", "margin-bottom": "30px"}),
+            ]),
+        ]
+    ))
 
-    return dff.iloc[
-        page_current*page_size: (page_current + 1)*page_size
-    ].to_dict('records')
+@app.callback(
+    Output('indicator-graphic', 'figure'),
+    [Input('state-id', 'value'), Input('years-id', 'value')])
+def update_time_series(state_id, years_id):
+
+    # print(dff.head())
+    data = []
+    for state in state_id:
+        for year in years_id:
+            # for indicator_id in indicator_ids:
+            dff = df.loc[(df['countryNames'] == state)]
+            trace = go.Bar(
+                x=[year],
+                y=dff[year],
+                name=state + ' ' + year + ' User Count',
+            )
+            data.append(trace)
+
+    return {
+        'data': data,
+        'layout': go.Layout(
+            xaxis={'title': 'Gender'},
+            yaxis={'title': 'User Count By Gender'},
+            barmode='group'
+        )
+    }
 
 
 @app.callback(
-    Output('table-paging-with-graph-container', "children"),
-    [Input('table-paging-with-graph', "data")])
-def update_graph(rows):
-    dff = pd.DataFrame(rows)
+    Output('indicator-graphic-1', 'figure'),
+    [Input('state1-id', 'value'), Input('age-id', 'value')])
+def update_bar_graph(state_1, age_id):
 
-    return html.Div(
-        [
-            dcc.Graph(
-                id=column,
-                style={'display': 'inline-block', 'text-align': 'center'},
-                figure={
-                    "data": [
+    # print(dff.head())
+    data = []
+    for state in state_1:
+        for age in age_id:
+            # for indicator_id in indicator_ids:
+            dff = df.loc[(df['countryNames'] == state)]
+            trace = go.Bar(
+                x=[age],
+                y=dff[age],
+                name=state + ' Age Group: ' + age + ' User Count',
 
-                        # "x": dff[caches["col"][0]],
-                        # "y": dff[column] if column in dff else [],
-                        # "type": "pie",
-                        # "marker": {"color": "#0074D9"},
-                        # "color":dff["male"],
-                        # 'line_color':'red',#dict(color='purple')
-                        # "name": dff["countryNames"]
-
-                        go.Pie(
-                            labels=dff[caches["col"][0]],
-                            values=dff[column] if column in dff else [],
-                            #name= dff["country names"]
-                        ),
-
-                    ],
-                    "layout": {
-                        "xaxis": {"automargin": True},
-                        "yaxis": {"automargin": True},
-                        "height": 650,
-                        "width": 650,
-                        "margin": {"t": 30, "l": 30, "r": 30},
-                        'title': column + " plot per country"
-                        # "color":"female"
-                    },
-                },
             )
-            for column in ["male", "female", "total"]
-        ]
-    )
+            data.append(trace)
+
+    return {
+        'data': data,
+        'layout': go.Layout(
+            xaxis={'title': 'Age Group'},
+            yaxis={'title': 'User Count by Age distribution'},
+            barmode='group'
+        )
+    }
+
+
+def layout():
+    return html.Div(children=[BODY])
+
+
+
 
 
 # import dash_table_experiments as dt

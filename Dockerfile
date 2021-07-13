@@ -63,6 +63,11 @@ ADD static/plotly(8).png /work/assets/plotly(8).png
 ADD static/plotly(9).png /work/assets/plotly(9).png
 ADD static/plotly(10).png /work/assets/plotly(10).png
 ADD static/plotly(12).png /work/assets/plotly(12).png
+ADD static/6.png /work/assets/6.png
+ADD static/7.png /work/assets/7.png
+ADD static/8.png /work/assets/8.png
+ADD static/9.png /work/assets/9.png
+ADD static/10.png /work/assets/10.png
 ADD static/custom.css /work/assets/custom.css
 ADD static/GUI.css /work/assets/GUI.css
 ADD static/searchTermsColor.html /work/assets/searchTermsColor.html
