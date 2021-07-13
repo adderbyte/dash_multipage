@@ -1,0 +1,28 @@
+version: '3.7'
+
+networks:
+  local:
+    driver: overlay
+  NPROXY:
+    external: true
+
+services:
+  visualizer:
+    image: reg.git.gen.tr/${CI_PROJECT_PATH:-tfb/data-platform-internship}:${CI_COMMIT_REF_SLUG:-main}
+    stop_grace_period: 30s
+    deploy:
+      replicas: 1
+      update_config:
+        delay: 10s
+        parallelism: 1
+        failure_action: rollback
+    networks:
+      - local
+      - NPROXY
+    environment:
+      PORT: 8050
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8050"]
+      interval: 200s
+      timeout: 200s
+      retries: 5

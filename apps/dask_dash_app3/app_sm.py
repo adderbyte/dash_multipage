@@ -482,7 +482,9 @@ LEFT_COLUMN = dbc.Jumbotron(
 )
 
 LDA_PLOT = dcc.Loading(
-    id="loading-lda-plot", children=[dcc.Graph(id="tsne-lda")], type="default"
+    id="loading-lda-plot", children=[dcc.Graph(id="tsne-lda", config={
+        "displaylogo": False
+    },)], type="default"
 )
 LDA_TABLE = html.Div(
     id="lda-table-block",
@@ -571,7 +573,9 @@ WORDCLOUD_PLOTS = [
                     dbc.Col(
                         dcc.Loading(
                             id="loading-frequencies",
-                            children=[dcc.Graph(id="frequency_figure")],
+                            children=[dcc.Graph(id="frequency_figure", config={
+        "displaylogo": False
+    },)],
                             type="default",
                         )
                     ),
@@ -586,7 +590,9 @@ WORDCLOUD_PLOTS = [
                                             dcc.Loading(
                                                 id="loading-treemap",
                                                 children=[
-                                                    dcc.Graph(id="bank-treemap")],
+                                                    dcc.Graph(id="bank-treemap" , config={
+        "displaylogo": False
+    },)],
                                                 type="default",
                                             )
                                         ],
@@ -598,7 +604,9 @@ WORDCLOUD_PLOTS = [
                                                 id="loading-wordcloud",
                                                 children=[
                                                     dcc.Graph(
-                                                        id="bank-wordcloud")
+                                                        id="bank-wordcloud", config={
+        "displaylogo": False
+    },)
                                                 ],
                                                 type="default",
                                             )
@@ -629,7 +637,9 @@ TOP_BANKS_PLOT = [
                         color="warning",
                         style={"display": "none"},
                     ),
-                    dcc.Graph(id="bank-sample"),
+                    dcc.Graph(id="bank-sample", config={
+        "displaylogo": False
+    },),
                 ],
                 type="default",
             )
@@ -670,7 +680,9 @@ TOP_BIGRAM_PLOT = [
                             ),
                         ]
                     ),
-                    dcc.Graph(id="bigrams-scatter"),
+                    dcc.Graph(id="bigrams-scatter", config={
+        "displaylogo": False
+    },),
                 ],
                 type="default",
             )
@@ -725,7 +737,9 @@ TOP_BIGRAM_COMPS = [
                             ),
                         ]
                     ),
-                    dcc.Graph(id="bigrams-comps"),
+                    dcc.Graph(id="bigrams-comps", config={
+        "displaylogo": False
+    },),
                 ],
                 type="default",
             )
@@ -735,7 +749,15 @@ TOP_BIGRAM_COMPS = [
 ]
 
 BODY = dbc.Container(
-    [
+    [html.H1("Statistical Models", style={
+        'textAlign': 'center',
+        # 'color': colors['background'],
+        # 'width': '100vw',
+        "font-family": "'Fredoka One', cursive",
+        "font-size": "48px",
+        "margin-bottom": "35px",
+        # "margin-right": "50px"
+    }),
         dbc.Row([dbc.Col(dbc.Card(TOP_BIGRAM_COMPS, style={"border-radius": "20px", "box-shadow": "0px 0px 8px 8px #ebe9e8",
                                                            "-webkit-box-shadow": "0px 0px 8px 8px #ebe9e8"}))],
                 style={"marginTop": 30}),
@@ -750,7 +772,7 @@ BODY = dbc.Container(
                         "-webkit-box-shadow": "0px 0px 8px 8px #ebe9e8"}), md=8),
             ],
             style={"marginTop": 30},
-        ),
+    ),
         dbc.Card(WORDCLOUD_PLOTS, style={
             "border-radius": "20px", "border-radius": "20px", "box-shadow": "0px 0px 8px 8px #ebe9e8",
             "-webkit-box-shadow": "0px 0px 8px 8px #ebe9e8"}),
@@ -861,10 +883,11 @@ def comp_bigram_comparisons(comp_first, comp_second):
     compare.loc[compare.company == 'a', 'company'] = comp_first
     compare.loc[compare.company == 'b', 'company'] = comp_second
 
-    # second componet
+    # second component
 
     sizes = bigram_.loc[(comp_second)].groupby(
         ['answers.2.values']).size().sort_values(ascending=False)[:10].values.shape[0]
+    print(sizes)
     if sizes > 0:
         sizeNew = 10+sizes
         compare.loc[10:sizeNew-1, 'ngram'] = bigram_.loc[(comp_second)].groupby(
@@ -873,9 +896,10 @@ def comp_bigram_comparisons(comp_first, comp_second):
             ['answers.2.values']).size().sort_values(ascending=False)[:sizes].values
 
     # first histo
-
+    print(sizeNew)
     size = bigram_.loc[(comp_first)].groupby(['answers.2.values']).size(
     ).sort_values(ascending=False)[:10].values.shape[0]
+    print(size)
     if size > 0:
         compare.loc[:size-1, 'ngram'] = bigram_.loc[(comp_first)].groupby(
             ['answers.2.values']).size().sort_values(ascending=False)[:size].index
@@ -884,7 +908,8 @@ def comp_bigram_comparisons(comp_first, comp_second):
 
     #print("I am checking my work .......daaaaaaa")
     # compare.head()
-
+    print(compare["ngram"])
+    print(compare["value"])
     fig = px.bar(
         compare,
         title="Comparison: " + comp_first + " | " + comp_second,
@@ -894,6 +919,7 @@ def comp_bigram_comparisons(comp_first, comp_second):
         template="plotly_white",
         color_discrete_sequence=px.colors.qualitative.Bold,
         labels={"company": "Company:", "ngram": "Football Clubs"},
+        # labels={"ngram": "Football Clubs"},
         hover_data="",
     )
     fig.update_layout(legend=dict(x=0.1, y=1.1), legend_orientation="h")

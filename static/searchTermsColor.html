@@ -288,18 +288,22 @@
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
     </script>
     <style>
         .nav-link,
         .navbar-brand {
-            color: #337ab7 !important;
+            color: #000000 !important;
             font-size: 14px !important;
             padding: 13px 10px 5px !important;
             margin-left: 18px !important;
             margin-right: 17.5px !important;
             font-family: sans-serif !important;
+            font-family: 'Fredoka One', cursive !important;
         }
 
         .navbar-brand {
@@ -316,26 +320,41 @@
                 <div class="navbar-nav">
                     <a class="navbar-brand" href="/apps/app1">Analytics App</a>
                     <a class="nav-link" href="/apps/app1">Home</a>
-                    <a class="nav-link" href="/apps/app3">Visualization</a>
+                    <a class="nav-link" href="/apps/app6">Visualization</a>
                     <a class="nav-link" href="#">Natural Language Processing</a>
                     <a class="nav-link" href="/apps/dask_dash_app3/app_sm">Statistical Models</a>
-                    <a class="nav-link" href="/apps/app6">Machine Learning</a>
-                    <a class="nav-link" href="https://plot.ly/products/dash/">Created using Dash by Plotly</a>
+                    <a class="nav-link" href="/apps/app6">Survey Streams</a>
                 </div>
             </div>
         </div>
     </nav>
-    <h1 class="display-5 text-center">Survey Response Search and Statistics</h1>
-    <br /><br />
+    <br />
+    <h1 class="display-5 text-center" style="font-family : 'Fredoka One', cursive; margin-top: 20px;">Survey Response
+        Search and Statistics</h1>
+    <br />
+    <style>
+        input:focus {
+            outline: none !important;
+            background-color: #c7c7c7;
+        }
+    </style>
     <div class="text-center">
         <div autocomplete="off">
             <div class="autocomplete">
-                <input id="searchInput" type="text" placeholder="Search the chart" style="width: 40vw" />
+                <input id="searchInput" type="text" placeholder="Search the chart" style="width: 40vw; border-radius: 20px; box-shadow: 0px 0px 12px 8px #cccccc;
+                    -webkit-box-shadow: 0px 0px 12px 8px #cccccc" />
             </div>
         </div>
     </div>
     <br /><br />
     <span id="d3-div-1-title-div"></span>
+    <style>
+        svg {
+            border-radius: 20px;
+            box-shadow: 0px 0px 12px 8px #cccccc;
+            -webkit-box-shadow: 0px 0px 12px 8px #cccccc;
+        }
+    </style>
     <div class="scattertext text-center" id="d3-div-1"></div>
     <br />
     <div id="d3-div-1-corpus-stats"></div>
@@ -11819,4 +11838,4 @@
         }, true, null, undefined, undefined, undefined, "#e5e5e3", undefined, undefined, undefined);
     autocomplete(document.getElementById("searchInput"), plotInterface.data.map((x) => x.term).sort(), plotInterface);
 </script>
-</html>
+</html>br

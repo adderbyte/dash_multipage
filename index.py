@@ -19,6 +19,7 @@ server = app.server
 app.layout = html.Div([html.Link(
     rel='stylesheet',
     href='/assets/custom.css'),
+
     dcc.Location(id='url', refresh=False),
     # html.Nav(id='nav',
     #          className='navbar navbar-default', children=html.Div(className='container-fluid', children=[html.Div(
@@ -44,24 +45,26 @@ app.layout = html.Div([html.Link(
     #          ])),
     html.Div(
     [
+        html.Link(href='https://fonts.googleapis.com', rel='preconnect'),
+        html.Link(href='https://fonts.gstatic.com', rel='preconnect'),
+        html.Link(
+            href='https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap', rel='stylesheet'),
         dbc.Nav(dbc.Row(
             [
                 dbc.Col(dbc.NavLink(
                     "Analytics App", active=True, href="#", className="navbar-brand vertical-center"), width="auto"),
                 dbc.Col(dbc.NavLink("Home", href="/apps/app1",
                                     className="text-right vertical-center"), width="auto"),
-                dbc.Col(dbc.NavLink("Visualization", href="/apps/app3",
+                dbc.Col(dbc.NavLink("Visualization", href="/apps/app6",
                                     className="text-right vertical-center"), width="auto"),
                 dbc.Col(dbc.NavLink("Natural Language Processing",
                                     href="/assets/searchTermsColor.html", className="text-right vertical-center", external_link=True,), width="auto"),
                 dbc.Col(dbc.NavLink("Statistical Models",
                                     href="/apps/dask_dash_app3/app_sm", className="text-right vertical-center"), width="auto"),
-                dbc.Col(dbc.NavLink("Machine Learning", href="/apps/app6",
+                dbc.Col(dbc.NavLink("Survey Streams", href="/apps/app6",
                                     className="text-right vertical-center"), width="auto"),
-                dbc.Col(dbc.NavLink("Created using Dash by Plotly",
-                                    href="https://plot.ly/products/dash/", className="text-right vertical-center"), width={"size": "auto"})
             ]
-        )),
+        ), style={"font-family": "'Fredoka One', cursive", "color": "black"}),
         html.Br(),
         html.P(id="button-clicks"),
     ]),
@@ -73,8 +76,8 @@ app.layout = html.Div([html.Link(
 def display_page(pathname):
     if pathname == '/apps/app1':
         return app1.layout()
-    elif pathname == '/apps/app3':
-        return app3.layout3()
+    elif pathname == '/apps/app6':
+        return app6.layout6()
     elif pathname == '/static/searchTermsColor.html':
         return searchTermsColor
     elif pathname == '/apps/dask_dash_app3/app_sm':
@@ -85,8 +88,8 @@ def display_page(pathname):
         return app7.layout7()
     elif pathname == '/apps/app8':
         return app8.layout8()
-    # else:
-    #     return app1.layout()
+    else:
+        return app1.layout()
 
 
 @ app.server.route('/dynamic/<path:path>')
@@ -96,4 +99,4 @@ def static_file(path):
 
 
 if __name__ == '__main__':
-    app.run_server(host='0.0.0.0', debug=True, port='8050')
+    app.run_server(host='0.0.0.0', debug=False, port='8050')
