@@ -24,6 +24,10 @@ RUN pip install -r requirements.txt
 
 ADD /data/displaydata.csv  /work/assets/displaydata.csv
 ADD /data/trufeed.csv  /work/assets/trufeed.csv
+ADD /data/Englishnlp.csv  /work/assets/Englishnlp.csv
+ADD /data/Turkishnlp.csv  /work/assets/Turkishnlp.csv
+ADD /data/langtype.csv  /work/assets/langtype.csv
+ADD /data/finaldf.csv  /work/assets/finaldf.csv
 
 ADD index.py  /work/index.py 
 ADD wsgi.py /work/wsgi.py
@@ -71,6 +75,8 @@ ADD static/10.png /work/assets/10.png
 ADD static/custom.css /work/assets/custom.css
 ADD static/GUI.css /work/assets/GUI.css
 ADD static/searchTermsColor.html /work/assets/searchTermsColor.html
+ADD static/turkey1.jpg /work/assets/turkey1.jpg
+ADD static/world_map-2.jpg /work/assets/world_map-2.jpg
 
 
 #RUN rm -rf /var/lib/apt/lists/*
