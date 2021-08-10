@@ -1,0 +1,132 @@
+index,countryNames,female,male,total,0-20,20-30,30-40,40-50,50-above
+Afghanistan,Afghanistan,0,0,1,0,0,0,0,0
+Algeria,Algeria,2,12,33,0,8,7,0,0
+Angola,Angola,1,3,6,0,1,3,0,0
+Argentina,Argentina,0,2,11,0,1,0,1,0
+Armenia,Armenia,0,0,2,0,0,0,0,0
+Australia,Australia,0,0,3,0,0,0,0,0
+Austria,Austria,1,7,14,0,1,3,0,0
+Azerbaijan,Azerbaijan,13,143,464,35,63,35,4,1
+Bahrain,Bahrain,0,0,1,0,0,0,0,0
+Bangladesh,Bangladesh,3,10,70,2,4,4,2,0
+Belarus,Belarus,0,7,12,0,5,1,0,0
+Belgium,Belgium,2,8,24,1,3,4,0,0
+Benin,Benin,0,4,7,0,1,1,1,0
+Bosnia and Herzegovina,Bosnia and Herzegovina,0,2,6,0,2,0,0,0
+Botswana,Botswana,0,1,1,0,0,0,0,1
+Brazil,Brazil,4,7,37,0,4,4,0,1
+Bulgaria,Bulgaria,2,7,15,1,5,1,1,0
+Burkina Faso,Burkina Faso,0,1,2,0,1,0,0,0
+Burundi,Burundi,0,0,1,0,0,0,0,0
+Cameroon,Cameroon,1,3,7,0,3,1,0,0
+Canada,Canada,1,4,14,0,1,5,0,0
+Chile,Chile,0,0,4,0,0,0,0,0
+China,China,2,3,294,1,0,2,0,1
+Colombia,Colombia,0,0,14,0,0,0,0,0
+Costa Rica,Costa Rica,0,0,1,0,0,0,0,0
+Croatia,Croatia,0,3,5,0,1,1,0,0
+Cuba,Cuba,0,0,1,0,0,0,0,0
+Cyprus,Cyprus,4,48,112,1,15,13,8,2
+Czechia,Czechia,1,3,6,0,0,1,0,0
+Côte d'Ivoire,Côte d'Ivoire,1,0,7,0,1,0,0,0
+Denmark,Denmark,1,9,12,1,2,4,2,1
+Dominican Republic,Dominican Republic,0,0,1,0,0,0,0,0
+Ecuador,Ecuador,0,1,3,0,0,0,1,0
+Egypt,Egypt,1,11,29,2,4,6,0,0
+El Salvador,El Salvador,0,0,1,0,0,0,0,0
+Eritrea,Eritrea,0,4,4,0,1,0,2,1
+Estonia,Estonia,1,4,6,0,0,2,2,1
+Eswatini,Eswatini,0,0,1,0,0,0,0,0
+Ethiopia,Ethiopia,0,9,11,0,4,1,4,0
+Finland,Finland,1,6,8,0,1,4,1,0
+France,France,0,8,21,0,2,4,0,0
+Gabon,Gabon,0,2,3,0,0,2,0,0
+Georgia,Georgia,0,11,21,2,5,4,1,0
+Germany,Germany,1,19,44,0,4,6,4,1
+Ghana,Ghana,0,1,9,0,0,1,0,0
+Greece,Greece,0,0,7,0,0,0,0,0
+Guatemala,Guatemala,0,0,2,0,0,0,0,0
+Honduras,Honduras,0,0,1,0,0,0,0,0
+Hungary,Hungary,0,3,4,0,1,0,1,1
+India,India,2,21,122,3,13,9,1,0
+Indonesia,Indonesia,5,59,164,1,26,31,6,0
+Iran,Iran,16,55,104,2,22,30,6,6
+Iraq,Iraq,66,307,411,53,167,108,29,5
+Ireland,Ireland,0,1,2,0,0,1,0,0
+Israel,Israel,1,1,4,2,0,0,0,0
+Italy,Italy,0,1,8,0,0,0,0,1
+Japan,Japan,0,1,2,0,0,1,0,0
+Jordan,Jordan,85,274,374,58,194,61,30,8
+Kazakhstan,Kazakhstan,2,5,10,0,2,1,1,2
+Kenya,Kenya,2,7,14,1,2,3,3,0
+Kosovo,Kosovo,0,2,4,0,0,0,0,0
+Kuwait,Kuwait,0,0,3,0,0,0,0,0
+Kyrgyzstan,Kyrgyzstan,0,1,1,0,0,1,0,0
+Lebanon,Lebanon,2,5,7,0,3,3,1,0
+Libya,Libya,0,4,8,0,0,2,1,0
+Lithuania,Lithuania,0,4,7,0,3,1,0,0
+Luxembourg,Luxembourg,0,0,1,0,0,0,0,0
+Madagascar,Madagascar,2,1,4,0,1,1,1,0
+Malawi,Malawi,0,0,1,0,0,0,0,0
+Malaysia,Malaysia,0,4,8,0,1,2,0,0
+Maldives,Maldives,0,0,2,0,0,0,0,0
+Mali,Mali,0,0,1,0,0,0,0,0
+Malta,Malta,0,0,1,0,0,0,0,0
+Mauritius,Mauritius,0,0,1,0,0,0,0,0
+Mexico,Mexico,2,1,19,0,1,2,0,0
+Moldova,Moldova,0,1,4,0,1,0,0,0
+Mongolia,Mongolia,0,0,4,0,0,0,0,0
+Morocco,Morocco,2,3,27,0,2,0,1,0
+Mozambique,Mozambique,0,0,1,0,0,0,0,0
+Myanmar,Myanmar,1,1,11,0,2,0,0,0
+Namibia,Namibia,0,1,2,0,0,0,1,0
+Nepal,Nepal,0,0,15,0,1,0,0,0
+Netherlands,Netherlands,1,10,70,0,1,5,2,0
+Nicaragua,Nicaragua,0,0,1,0,0,0,0,0
+Nigeria,Nigeria,22,107,609,9,94,32,10,1
+North Macedonia,North Macedonia,0,4,6,0,3,0,0,0
+Norway,Norway,9,44,71,0,34,11,3,0
+Oman,Oman,1,3,7,0,0,1,3,0
+Pakistan,Pakistan,2,13,63,2,8,5,0,0
+Palestinian Territory,Palestinian Territory,0,1,1,0,1,0,0,0
+Peru,Peru,0,1,8,0,1,0,0,0
+Philippines,Philippines,3,5,42,0,3,5,1,0
+Poland,Poland,2,6,26,1,3,1,1,0
+Qatar,Qatar,0,2,2,0,0,1,0,0
+Romania,Romania,2,12,15,0,4,7,0,1
+Russia,Russia,24,115,185,14,64,33,13,7
+Saudi Arabia,Saudi Arabia,330,1437,1856,295,770,481,153,29
+Serbia,Serbia,0,1,3,0,1,0,0,0
+Singapore,Singapore,0,1,4,0,0,0,1,0
+Slovenia,Slovenia,0,0,1,0,0,0,0,0
+Somaliland,Somaliland,3,21,26,1,6,11,4,1
+South Africa,South Africa,1,1,12,0,0,2,1,0
+South Korea,South Korea,0,3,7,0,0,0,1,1
+South Sudan,South Sudan,0,2,2,0,1,1,0,0
+Spain,Spain,1,12,23,1,4,6,3,0
+Sri Lanka,Sri Lanka,0,0,37,1,0,0,0,0
+Sudan,Sudan,0,3,5,0,1,1,1,0
+Sweden,Sweden,11,37,52,1,26,12,5,2
+Switzerland,Switzerland,0,2,4,0,0,2,0,0
+Syria,Syria,90,347,467,85,222,81,25,3
+Taiwan,Taiwan,0,0,1,0,0,0,0,0
+Tajikistan,Tajikistan,0,1,1,0,1,0,0,0
+Tanzania,Tanzania,1,9,20,0,5,4,1,1
+Thailand,Thailand,0,3,11,0,1,0,2,0
+The Bahamas,The Bahamas,0,0,1,0,0,0,0,0
+Togo,Togo,0,0,1,0,0,0,0,0
+Tunisia,Tunisia,0,2,7,0,0,1,1,0
+Turkey,Turkey,2817,15664,50123,1787,6077,4046,1397,197
+Turkmenistan,Turkmenistan,1,5,19,0,3,2,1,0
+Uganda,Uganda,0,1,1,0,0,1,0,0
+Ukraine,Ukraine,10,36,64,2,15,13,5,7
+United Arab Emirates,United Arab Emirates,0,3,9,1,1,1,1,0
+United Kingdom,United Kingdom,14,31,53,2,19,14,1,0
+United States,United States,4,15,41,1,7,2,8,1
+Uruguay,Uruguay,0,0,1,0,0,0,0,0
+Uzbekistan,Uzbekistan,0,1,2,0,0,0,0,0
+Venezuela,Venezuela,0,4,46,0,2,1,0,0
+Vietnam,Vietnam,5,17,55,1,8,10,2,0
+Yemen,Yemen,0,22,27,1,4,10,5,1
+Zambia,Zambia,1,3,5,0,1,1,0,0
+Zimbabwe,Zimbabwe,1,2,8,0,1,2,0,0

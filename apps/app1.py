@@ -26,7 +26,7 @@ def layout():
                         html.Br(), html.Br(),
                         html.A(children=[html.Img(
                             className='img-responsive', src=app.get_asset_url('plotly(10).png'), style={"border-radius": "20px", "box-shadow": "0px 0px 12px 8px #cccccc",
-                                                                                                        "-webkit-box-shadow": "0px 0px 12px 8px #cccccc"})], href="/assets/searchTermsColor.html"),
+                                                                                                        "-webkit-box-shadow": "0px 0px 12px 8px #cccccc"})], href="/apps/app4"),
                     ]),
                     html.Div(className='col-lg-4', children=[
                         html.Br(), html.Br(),

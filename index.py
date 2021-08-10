@@ -3,7 +3,7 @@ from dash.dependencies import Input, Output
 import dash_core_components as dcc
 import dash_html_components as html
 from app import app
-from apps import app1, app2, app3, app5, app6, app7, app8
+from apps import app1, app2, app3, app4, app5, app6, app7, app8
 from apps.dask_dash_app3 import app_sm
 
 # import dash_table_experiments as dt
@@ -58,7 +58,7 @@ app.layout = html.Div([html.Link(
                 dbc.Col(dbc.NavLink("Visualization", href="/apps/app6",
                                     className="text-right vertical-center"), width="auto"),
                 dbc.Col(dbc.NavLink("Natural Language Processing",
-                                    href="/assets/searchTermsColor.html", className="text-right vertical-center", external_link=True,), width="auto"),
+                                    href="/apps/app4", className="text-right vertical-center", external_link=True,), width="auto"),
                 dbc.Col(dbc.NavLink("Statistical Models",
                                     href="/apps/dask_dash_app3/app_sm", className="text-right vertical-center"), width="auto"),
                 dbc.Col(dbc.NavLink("Survey Streams", href="/apps/app6",
@@ -78,12 +78,10 @@ def display_page(pathname):
         return app1.layout()
     elif pathname == '/apps/app6':
         return app6.layout6()
-    elif pathname == '/static/searchTermsColor.html':
-        return searchTermsColor
+    elif pathname == '/apps/app4':
+        return app4.layout4()
     elif pathname == '/apps/dask_dash_app3/app_sm':
         return app_sm.layout()
-    elif pathname == '/apps/app6':
-        return app6.layout6()
     elif pathname == '/apps/app7':
         return app7.layout7()
     elif pathname == '/apps/app8':

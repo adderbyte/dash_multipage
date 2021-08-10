@@ -1,279 +1,360 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-import plotly.graph_objs as go
-import pandas as pd
-#import dash_table_experiments as dt
-from functools import lru_cache
-import datetime
 from dash.dependencies import Input, Output
-
-from app import app,cache
 import plotly.express as px
+import dash_bootstrap_components as dbc
+import numpy as np
+import plotly.graph_objs as go
+from wordcloud import WordCloud
+from wordcloud import STOPWORDS
+import requests
+import pandas as pd
+import io
+from PIL import Image
+
+from app import app, cache
+
+final_nlp = pd.read_csv("./assets/finaldf.csv")
+Turkishnlp = pd.read_csv("./assets/Turkishnlp.csv")
+Englishnlp = pd.read_csv("./assets/Englishnlp.csv")
+
+labels = ['Turkish', 'English']
+english = ['POSITIVE', 'NEGATIVE', 'undetermined']
+turkish = ['positive', 'negative', 'undetermined']
 
 
-@cache.memoize()
-def datas():
 
-    df = px.data.iris()
-    return df
+def bubble_chart():
+    fig = px.scatter(final_nlp, x="Count", y="Languages",size="Count", color="Languages",hover_name="Languages", size_max=80, log_x=True)
+    return fig
+def word_cloud_1():
+    complaints_text = list(Turkishnlp["trProcessed"].dropna().values)
+    if len(complaints_text) < 1:
+        return {}, {}, {}
+    text = " ".join(list(complaints_text))
 
-def layout4():
-    return  html.Div([
-    dcc.Graph(id="scatter-plotall"),
-    html.P("Petal Width:"),
-    dcc.RangeSlider(
-        id='range-sliderall',
-        min=0, max=2.5, step=0.1,
-        marks={0: '0', 2.5: '2.5'},
-        value=[0.5, 2]
-    ),
-])
+    mask = np.array(Image.open('./assets/turkey1.jpg'))
+    wc = WordCloud(stopwords=STOPWORDS,
+               mask=mask, background_color="white",
+               max_words=2000, max_font_size=256,
+               random_state=42, width=mask.shape[1],
+               height=mask.shape[0])
+    wc.generate(text)
+    fig = px.imshow(wc)
+    return fig
 
+def word_cloud_2():
+    complaints_text = list(Englishnlp["enProcessed"].dropna().values)
+    if len(complaints_text) < 1:
+        return {}, {}, {}
+    text = " ".join(list(complaints_text))
+
+    mask = np.array(Image.open('./assets/world_map-2.jpg'))
+    wc = WordCloud(stopwords=STOPWORDS,
+               mask=mask, background_color="white",
+               max_words=2000, max_font_size=256,
+               random_state=42, width=mask.shape[1],
+               height=mask.shape[0])
+    wc.generate(text)
+    fig = px.imshow(wc)
+    return fig
+
+Layout = dbc.Container(html.Div([html.H1("NLP", style={
+    'textAlign': 'center',
+    "font-family": "'Fredoka One', cursive",
+    "font-size": "48px",
+    "margin-bottom": "35px",
+}), dbc.CardBody(html.Div([ dbc.CardHeader(html.H4("Count by Language", style={'text-align': 'center', 'font-weight': 800}), style={
+                   "border-radius": "20px 20px 0px 0px"}),
+                # dcc.Dropdown(
+                #     id='state-id',
+                #     options=[{'label': i, 'value': i} for i in df.countryNames.unique()], multi=True,
+                #     value=['Turkey'],
+                #     placeholder='Filter by region...'
+                # ),
+                # dcc.Dropdown(
+                #     id='years-id',
+                #     options=[{'label': i, 'value': i}
+                #             for i in genders],
+                #     value=['total'],
+                #     multi=True, placeholder='Filter by sex ...'
+                # ),
+                #html.P("Country:"),
+                # dcc.Dropdown(
+                #     id='country-id', 
+                #     value='Turkey', 
+                #     options=[{'value': x, 'label': x} 
+                #             for x in country],
+                #     clearable=False
+                # ),
+                dcc.Graph(figure = bubble_chart(), config={
+        "displaylogo": False
+    },
+                    ),
+                
+            ]),
+                style={"border-radius": "20px", "box-shadow": "0px 0px 8px 8px #ebe9e8",
+                "-webkit-box-shadow": "0px 0px 8px 8px #ebe9e8","margin-bottom": "30px", "margin-top": "30px","padding":"1%"}),
+            
+            html.Br(), html.Br(),
+            dbc.CardBody(html.Div([ dbc.CardHeader(html.H4("Sentiments for Language", style={'text-align': 'center', 'font-weight': 800}), style={
+                   "border-radius": "20px 20px 0px 0px"}),
+                dcc.Dropdown(
+                    id='values',
+                    options=[{'label': i, 'value': i} for i in labels],
+                    value='Turkish',
+                    placeholder='Filter by region...'
+                ),
+                
+                dcc.Graph(id= 'pie-chart-1', config={
+        "displaylogo": False
+    },
+                    ),
+                
+            ]),
+                style={"border-radius": "20px", "box-shadow": "0px 0px 8px 8px #ebe9e8",
+                "-webkit-box-shadow": "0px 0px 8px 8px #ebe9e8","margin-bottom": "30px", "margin-top": "30px","padding":"1%"}),
+
+                html.Br(), html.Br(),
+                dbc.CardBody(html.Div([ dbc.CardHeader(html.H4("Word Cloud - Turkish", style={'text-align': 'center', 'font-weight': 800}), style={
+                   "border-radius": "20px 20px 0px 0px"}),
+                dcc.Dropdown(
+                    id='words2',
+                    options=[{'label': i, 'value': i} for i in turkish],
+                    value='positive',
+                    placeholder='Filter by region...'
+                ),
+                # dcc.Dropdown(
+                #     id='years-id',
+                #     options=[{'label': i, 'value': i}
+                #             for i in genders],
+                #     value=['total'],
+                #     multi=True, placeholder='Filter by sex ...'
+                # ),
+                #html.P("Country:"),
+                # dcc.Dropdown(
+                #     id='country-id', 
+                #     value='Turkey', 
+                #     options=[{'value': x, 'label': x} 
+                #             for x in country],
+                #     clearable=False
+                # ),
+                dcc.Graph(id = "turkishcloud", config={
+        "displaylogo": False
+    },
+                    ),
+                
+            ]),
+                style={"border-radius": "20px", "box-shadow": "0px 0px 8px 8px #ebe9e8",
+                "-webkit-box-shadow": "0px 0px 8px 8px #ebe9e8","margin-bottom": "30px", "margin-top": "30px","padding":"1%"}),
+
+                html.Br(), html.Br(),
+                dbc.CardBody(html.Div([ dbc.CardHeader(html.H4("Word Cloud - English", style={'text-align': 'center', 'font-weight': 800}), style={
+                   "border-radius": "20px 20px 0px 0px"}),
+                dcc.Dropdown(
+                    id='words',
+                    options=[{'label': i, 'value': i} for i in english],
+                    value='POSITIVE',
+                    placeholder='Filter by sentiment...'
+                ),
+                # dcc.Dropdown(
+                #     id='years-id',
+                #     options=[{'label': i, 'value': i}
+                #             for i in genders],
+                #     value=['total'],
+                #     multi=True, placeholder='Filter by sex ...'
+                # ),
+                # html.P("Country:"),
+                # dcc.Dropdown(
+                #     id='country-id', 
+                #     value='Turkey', 
+                #     options=[{'value': x, 'label': x} 
+                #             for x in country],
+                #     clearable=False
+                # ),
+                dcc.Graph(id ='word-1', config={
+        "displaylogo": False
+    },
+                    ),
+                
+            ]),
+                style={"border-radius": "20px", "box-shadow": "0px 0px 8px 8px #ebe9e8",
+                "-webkit-box-shadow": "0px 0px 8px 8px #ebe9e8","margin-bottom": "30px", "margin-top": "30px","padding":"1%"}),
+]))
+
+# Pie Chart Callback
 @app.callback(
-    Output("scatter-plotall", "figure"), 
-    [Input("range-sliderall", "value")])
-def update_bar_chart(slider_range):
-    low, high = slider_range
-    df = datas()
-    print(df.head(),flush=True)
-    mask = (df['petal_width'] > low) & (df['petal_width'] < high)
-    fig = px.scatter(
-        df[mask], x="sepal_width", y="sepal_length", 
-        color="species", size='petal_length', 
-        hover_data=['petal_width'])
+    Output("pie-chart-1", "figure"),
+    [Input("values", "value")])
+def generate_chart(values):
+    fig = go.Figure()
+    if values == "Turkish":
+        count = Turkishnlp["sentimentAnalysis"].value_counts().index[:3].tolist()
+        a = Turkishnlp["sentimentAnalysis"].value_counts()
+        a.tolist()
+        colors = ['#05ed18', '#ff241c', '#0066ff']
+        fig = go.Figure(data=[go.Pie(labels=count, values=a)])
+        fig.update_traces(hoverinfo='label+percent', textinfo='value', textfont_size=20, 
+                    marker=dict(colors=colors))
+        #fig.show()
+    elif values == "English":
+        count = Englishnlp["sentimentAnalysis"].value_counts().index[:3].tolist()
+        a = Englishnlp["sentimentAnalysis"].value_counts()
+        a.tolist()
+        colors = ['#05ed18', '#ff241c', '#0066ff']
+        fig = go.Figure(data=[go.Pie(labels=count, values=a)])
+        fig.update_traces(hoverinfo='label+percent', textinfo='value', textfont_size=20, 
+                    marker=dict(colors=colors))
+        #fig.show()
+    return fig
+
+###English wordcloud    
+@app.callback(
+    Output("word-1", "figure"),
+    [Input("words", "value")])
+def generate_cloud(words):
+    fig = go.Figure()
+    if words == "POSITIVE":
+        Englishnlp1 = Englishnlp[(Englishnlp.sentimentAnalysis != 'NEGATIVE') & (Englishnlp.sentimentAnalysis != 'undetermined')]
+        complaints_text = list(Englishnlp1["enProcessed"].dropna().values)
+        if len(complaints_text) < 1:
+            return {}, {}, {}
+        text = " ".join(list(complaints_text))
+
+        mask = np.array(Image.open('./assets/world_map-2.jpg'))
+        wc = WordCloud(stopwords=STOPWORDS,
+               mask=mask, background_color="white",
+               max_words=2000, max_font_size=256,
+               random_state=42, width=mask.shape[1],
+               height=mask.shape[0])
+        wc.generate(text)
+        fig = px.imshow(wc)
+        #fig.show()
+    elif words == "NEGATIVE":
+        Englishnlp1 = Englishnlp[(Englishnlp.sentimentAnalysis != 'POSITIVE') & (Englishnlp.sentimentAnalysis != 'undetermined')]
+        complaints_text = list(Englishnlp1["enProcessed"].dropna().values)
+        if len(complaints_text) < 1:
+            return {}, {}, {}
+        text = " ".join(list(complaints_text))
+
+        mask = np.array(Image.open('./assets/world_map-2.jpg'))
+        wc = WordCloud(stopwords=STOPWORDS,
+               mask=mask, background_color="white",
+               max_words=2000, max_font_size=256,
+               random_state=42, width=mask.shape[1],
+               height=mask.shape[0])
+        wc.generate(text)
+        fig = px.imshow(wc)
+        #fig.show()
+    elif words == "undetermined":
+        Englishnlp1 = Englishnlp[(Englishnlp.sentimentAnalysis != 'POSITIVE') & (Englishnlp.sentimentAnalysis != 'NEGATIVE')]
+        complaints_text = list(Englishnlp1["enProcessed"].dropna().values)
+        if len(complaints_text) < 1:
+            return {}, {}, {}
+        text = " ".join(list(complaints_text))
+
+        mask = np.array(Image.open('./assets/world_map-2.jpg'))
+        wc = WordCloud(stopwords=STOPWORDS,
+               mask=mask, background_color="white",
+               max_words=2000, max_font_size=256,
+               random_state=42, width=mask.shape[1],
+               height=mask.shape[0])
+        wc.generate(text)
+        fig = px.imshow(wc)
+        #fig.show()
+    return fig
+
+###Turkish Word cloud
+@app.callback(
+    Output("turkishcloud", "figure"),
+    [Input("words2", "value")])
+def generate_cloud(words):
+    fig = go.Figure()
+    if words == "positive":
+        Turkishnlp1 = Turkishnlp[(Turkishnlp.sentimentAnalysis != 'negative') & (Turkishnlp.sentimentAnalysis != 'undetermined')]
+        complaints_text = list(Turkishnlp1["trProcessed"].dropna().values)
+        if len(complaints_text) < 1:
+            return {}, {}, {}
+        text = " ".join(list(complaints_text))
+
+        mask = np.array(Image.open('./assets/turkey1.jpg'))
+        wc = WordCloud(stopwords=STOPWORDS,
+               mask=mask, background_color="white",
+               max_words=2000, max_font_size=256,
+               random_state=42, width=mask.shape[1],
+               height=mask.shape[0])
+        wc.generate(text)
+        fig = px.imshow(wc)
+        #fig.show()
+    elif words == "negative":
+        Turkishnlp1 = Turkishnlp[(Turkishnlp.sentimentAnalysis != 'positive') & (Turkishnlp.sentimentAnalysis != 'undetermined')]
+        complaints_text = list(Turkishnlp1["trProcessed"].dropna().values)
+        if len(complaints_text) < 1:
+            return {}, {}, {}
+        text = " ".join(list(complaints_text))
+
+        mask = np.array(Image.open('./assets/turkey1.jpg'))
+        wc = WordCloud(stopwords=STOPWORDS,
+               mask=mask, background_color="white",
+               max_words=2000, max_font_size=256,
+               random_state=42, width=mask.shape[1],
+               height=mask.shape[0])
+        wc.generate(text)
+        fig = px.imshow(wc)
+        #fig.show()
+    elif words == "undetermined":
+        Turkishnlp1 = Turkishnlp[(Turkishnlp.sentimentAnalysis != 'positive') & (Turkishnlp.sentimentAnalysis != 'negative')]
+        complaints_text = list(Turkishnlp1["trProcessed"].dropna().values)
+        if len(complaints_text) < 1:
+            return {}, {}, {}
+        text = " ".join(list(complaints_text))
+
+        mask = np.array(Image.open('./assets/turkey1.jpg'))
+        wc = WordCloud(stopwords=STOPWORDS,
+               mask=mask, background_color="white",
+               max_words=2000, max_font_size=256,
+               random_state=42, width=mask.shape[1],
+               height=mask.shape[0])
+        wc.generate(text)
+        fig = px.imshow(wc)
+        #fig.show()
     return fig
 
 
-# @cache.memoize()
-# def datas():
-# 	df = px.data.iris()
-# 	return df
+# # Bar Chart Callback
 
-# def layout5():
-#     return  html.Div([
-#     dcc.Graph(id="scatter-plot5"),
-#     html.P("Petal Width:"),
-#     dcc.RangeSlider(
-#         id='range-slider5',
-#         min=0, max=2.5, step=0.1,
-#         marks={0: '0', 2.5: '2.5'},
-#         value=[0.5, 2]
-#     ),
-# ])
 
 # @app.callback(
-#     Output("scatter-plot5", "figure"), 
-#     [Input("range-slider5", "value")])
-# def update_bar_chart(slider_range):
-#     low, high = slider_range
-#     df = datas()
-#     mask = (df['petal_width'] > low) & (df['petal_width'] < high)
-#     fig = px.scatter(
-#         df[mask], x="sepal_width", y="sepal_length", 
-#         color="species", size='petal_length', 
-#         hover_data=['petal_width'])
+#     Output("bar-chart", "figure"),
+#     [Input("dropdown", "value"), Input("crossfilter-yaxis-type", "value")])
+# def update_bar_chart(label, yaxis_type):
+#     if yaxis_type == 'Linear':
+#         fig = px.bar(c, x='heading', y=label, labels={
+#                         "heading": "Survey"
+#                     },)
+#         fig = fig.update_traces(marker_color='#7F3C8D')
+#         fig = fig.update_layout(plot_bgcolor='rgb(255,255,255)')
+#     else:
+#         fig = px.bar(l, x='heading', y=label, labels={
+#                         "heading": "Survey"
+#                     },)
+#     # fig = fig.update_yaxes(type='linear' if yaxis_type == 'Linear' else 'log')
+#         fig = fig.update_traces(marker_color='#7F3C8D')
+#     # fig = fig.update_yaxes(type='log')
+#         fig = fig.update_layout(plot_bgcolor='rgb(255,255,255)')
+#         # l[label] = c[label]
+
 #     return fig
-# # import dash_t
 
 
-# def year_maker(row):
-#     now_year=int(str(datetime.datetime.now())[:4])
-#     if row['Закупка']==0:
-#         return 'Утеряна летопись'
-#     elif now_year- row['Закупка']<=3:
-#         return 'до 3 лет'
-#     elif now_year-row['Закупка']<=5:
-#         return 'до 5 лет'
-#     elif now_year- row['Закупка']<=7:
-#         return 'до 7 лет'
-#     elif now_year- row['Закупка']>7:
-#         return 'более 7 лет'
+# app.run_server(debug=True)
 
-# @cache.memoize()
-# def it_get_df(date):
-            
-#     df=pd.read_excel('all_it.xls',encoding='utf-8')
-#     #меняем пустые строки на 0
-#     df=df.fillna(0)
-#     return df
-  
+# def layout6():
+#     return html.Div(children=[BODY])
 
+# if __name__ == '__main__':
+#     app.run_server(debug=True)
 
-
-# def layout():
-    
-    
-#     load_time=str(datetime.datetime.now())
-#     load_time=load_time[:15]
-        
-#     main_df=it_get_df(load_time)
-   
-#     departments=main_df[main_df['Филиал']!=0]['Филиал'].unique().tolist()
-#     departments.append('Все')
-#     return html.Div([
-    
-#     html.Div([html.H3('RGS IT devices' )],style={'text-align':'center', 'font-size': '1.875em'}),
-#     html.Div(id='all_stored_data',children=load_time,style={'display':'none'}),
-   
-#     html.Div([
-#          html.Div([dcc.Dropdown(id='all_department',options=[{'label' : i, 'value' : i } for i in departments],value='Все')],style={'width':'100%','display':'inline-block','text-align':'center'})
-        
-#     ]),
-    
-#     html.Div([dcc.Graph(id='all_main_view')
-#                         ], style={'width': '100%', 'display': 'inline-block'}),
-    
-#     html.Div([dcc.Graph(id='all_age')],style={'width': '49%', 'display': 'inline-block'}),
-#     html.Div([html.P(id='all_table_info',style={ 'font-size': '1.2em'}),dt.DataTable(rows=[{}],
-#         # optional - sets the order of columns
-#         columns=['Наименование','Количество'],
-#         row_selectable=False,
-#         #filterable=True,
-#         sortable=True,
-#         editable=False,
-#         id='all_device_info'
-#         )],style={'width': '49%', 'display': 'inline-block'})
-#     ]) 
-
-
-# @app.callback(
-# dash.dependencies.Output('all_main_view','figure'),
-# [dash.dependencies.Input('all_stored_data','children')
-# ,dash.dependencies.Input('all_department','value')
-# ])
-
-# def all_update_main_view(stored_data,department):
-    
-#     main_df=it_get_df(stored_data)
-    
-#     if department!='Все':
-#         main_df=main_df[main_df['Филиал']==department]
-    
-    
-#     main_df=main_df[['Тип оборудования', 'Филиал']].groupby(['Тип оборудования']).agg({'Филиал': lambda x: len(x[x!=0])})
-#     main_df=pd.DataFrame(main_df.to_records())
-    
-#     return { 
-#                         'data':[
-#                         #{'x': main_df['Вид оборудования'], 'y': main_df['Фирма'] ,'marker':{'color':'#d0cbd8'}, 'type' : 'bar'  , 'name' : 'Всего оборудования'},                 
-#                         {'x': main_df['Тип оборудования'], 'y': main_df['Филиал'] ,'marker':{'color':'#41a270'}, 'type' : 'bar' , 'name' : 'В эксплуатации'}
-#                         ], 
-#                         'layout':{ 'hovermode' : 'closest',"font": {"size": '0.7em'}}
-#                         }
-
-# @app.callback(
-# dash.dependencies.Output('all_age','figure'),
-# [dash.dependencies.Input('all_stored_data','children')
-# ,dash.dependencies.Input('all_department','value')
-# ,dash.dependencies.Input('all_main_view','clickData')
-# ])
-
-
-# def all_update_age_graph(stored_data,department,device_type):
-    
-    
-#     main_df=it_get_df(stored_data)
-    
-#     if department!='Все':
-#         main_df=main_df[main_df['Филиал']==department]
-        
-#     #Фильтруем по типу оборудования
-#     try:
-#         device=device_type['points'][0]['x']
-#     except TypeError:
-#         device='Принтер'
-        
-#     main_df=main_df[main_df['Тип оборудования']==device]
-    
-#     #добавим новую колонку с годом ввода в эксплуатацию
-#     main_df['год'] = main_df.apply (lambda row: year_maker (row),axis=1)
-        
-#     main_df=main_df[['год', 'Филиал']].groupby(['год']).agg({'Филиал': lambda x: len(x[x!=0])})
-#     main_df=pd.DataFrame(main_df.to_records())
-#     title_text=device + ' в эксплуатации'
-#     return {
-#     'data':[go.Pie(labels=main_df['год'],values=main_df['Филиал']
-#                         ,hoverinfo='label+value+percent'
-#                         ,textinfo='percent'
-#                         ,marker={'colors':['rgba(65, 162, 112,0.9)','rgba(65, 162, 112,0.7)','rgba(65, 162, 112,0.5)','rgba(65, 162, 112,0.3)','rgba(65, 162, 112,0.1)']}
-#                         )]
-#     ,'layout':{'title': title_text,"font": {"size": '0.7em'}}
-#     }
-
-
-
-
-# @app.callback(
-# dash.dependencies.Output('all_device_info','rows'),
-# [dash.dependencies.Input('all_stored_data','children')
-# ,dash.dependencies.Input('all_department','value')
-# ,dash.dependencies.Input('all_main_view','clickData')
-# ,dash.dependencies.Input('all_age','clickData')
-# ])
-
-# def all_update_device_info(stored_data,department,device_type,age):
-    
-#     main_df=it_get_df(stored_data)
-    
-#     #Убираем те что не в эксплуатации
-#     main_df=main_df[main_df['Филиал']!=0]
-    
-#     if department!='Все':
-#         main_df=main_df[main_df['Филиал']==department]
-        
-    
-        
-#     #Фильтруем по типу оборудования
-#     try:
-#         device=device_type['points'][0]['x']
-#     except TypeError:
-#         device='Принтер'
-        
-#     main_df=main_df[main_df['Тип оборудования']==device]
-    
-#     #добавим новую колонку с годом ввода в эксплуатацию
-#     main_df['год'] = main_df.apply (lambda row: year_maker (row),axis=1)
-    
-#     #Фильтруем по годам в эксплуатации
-#     try:
-#         years_old=age['points'][0]['label']
-#     except TypeError:
-#         years_old='до 3 лет'
-        
-#     main_df=main_df[main_df['год']==years_old]
-    
-#     main_df=main_df[['Наименование', 'Филиал']].groupby(['Наименование']).agg({'Филиал': lambda x: len(x[x!=0])})
-#     main_df=pd.DataFrame(main_df.to_records())
-#     main_df.columns=['Наименование','Количество']
-    
-#     return main_df.to_dict('records')
-    
-    
-# @app.callback(
-# dash.dependencies.Output('all_table_info','children'),
-# [dash.dependencies.Input('all_department','value')
-# ,dash.dependencies.Input('all_main_view','clickData')
-# ,dash.dependencies.Input('all_age','clickData')
-# ])
-
-# def all_update_table_info(department,device_type,age):
-    
-#     label=department + '  '
-    
-#     try:
-#         device=device_type['points'][0]['x']
-#     except TypeError:
-#         device='Принтер'
-    
-#     label=label + device + ' '
-    
-#     try:
-#         years_old=age['points'][0]['label']
-#     except TypeError:
-#         years_old='до 3 лет'
-        
-#     label=label + years_old + ' в эксплуатации'    
-    
-#     return label
-    
+def layout4():
+    return html.Div(children=[Layout])

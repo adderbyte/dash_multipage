@@ -20,12 +20,16 @@ c['heading'] = c['title']
 for i in range(len(c)):
     c['heading'][i] = c['title'][i]['tr']
 c = c.dropna()
+c['heading'] = c['heading'].replace(['Kentplaza Carrefour Anketi'],'Company A')
+c['heading'] = c['heading'].replace(['Konya Elektronik Market Anketi'],'Company B')
 
 l = pd.read_json(s)
 l['heading'] = l['title']
 for i in range(len(l)):
     l['heading'][i] = l['title'][i]['tr']
 l = l.dropna()
+l['heading'] = l['heading'].replace(['Kentplaza Carrefour Anketi'],'Company A')
+l['heading'] = l['heading'].replace(['Konya Elektronik Market Anketi'],'Company B')
 l['totalTfb'] = np.log2(l['totalTfb'])
 l["participantLimit"] = np.log2(l["participantLimit"])
 l['answerCount'] = np.log2(l['answerCount'])
@@ -35,27 +39,46 @@ labels = ['totalTfb', 'participantLimit', 'answerCount']
 df = pd.read_csv('./assets/displaydata.csv')
 df.set_index('index')
 # app = dash.Dash()
-years = np.array(['Oct-20', '20-30', '30-40', '40-50', '50-above'])
-genders = np.array(['female', 'male', 'total'])
+years = np.array(['0-20', '20-30', '30-40', '40-50', '50-above'])
+genders = np.array(['female', 'male', 'Not Specified'])
+
+cf = pd.read_csv('./assets/displaydata.csv')
+cf.set_index('index')
+cf['Not Specified']=cf['total']-(cf['male']+cf['female'])
+cf = cf.drop(['total', '0-20', '20-30', '30-40', '40-50', '50-above'], axis = 1)
+cf = cf.transpose()
+cf = cf.set_axis(cf.loc['index'].to_list(), axis=1)
+new_df2 = cf.iloc[2:5,:]
+country = cf.loc['index'].to_list()
+
 
 BODY = dbc.Container(html.Div([html.H1("Visualization", style={
     'textAlign': 'center',
     "font-family": "'Fredoka One', cursive",
     "font-size": "48px",
     "margin-bottom": "35px",
-}), dbc.CardBody(html.Div([
+}), dbc.CardBody(html.Div([ dbc.CardHeader(html.H4("User Count by Gender", style={'text-align': 'center', 'font-weight': 800}), style={
+                   "border-radius": "20px 20px 0px 0px"}),
+                # dcc.Dropdown(
+                #     id='state-id',
+                #     options=[{'label': i, 'value': i} for i in df.countryNames.unique()], multi=True,
+                #     value=['Turkey'],
+                #     placeholder='Filter by region...'
+                # ),
+                # dcc.Dropdown(
+                #     id='years-id',
+                #     options=[{'label': i, 'value': i}
+                #             for i in genders],
+                #     value=['total'],
+                #     multi=True, placeholder='Filter by sex ...'
+                # ),
+                html.P("Country:"),
                 dcc.Dropdown(
-                    id='state-id',
-                    options=[{'label': i, 'value': i} for i in df.countryNames.unique()], multi=True,
-                    value=['Turkey'],
-                    placeholder='Filter by region...'
-                ),
-                dcc.Dropdown(
-                    id='years-id',
-                    options=[{'label': i, 'value': i}
-                            for i in genders],
-                    value=['total'],
-                    multi=True, placeholder='Filter by sex ...'
+                    id='country-id', 
+                    value='Turkey', 
+                    options=[{'value': x, 'label': x} 
+                            for x in country],
+                    clearable=False
                 ),
                 dcc.Graph(id='indicator', config={
         "displaylogo": False
@@ -67,7 +90,8 @@ BODY = dbc.Container(html.Div([html.H1("Visualization", style={
                 "-webkit-box-shadow": "0px 0px 8px 8px #ebe9e8","margin-bottom": "30px", "margin-top": "30px","padding":"1%"}),
             
             html.Br(), html.Br(),
-            dbc.CardBody(html.Div([
+            dbc.CardBody(html.Div([dbc.CardHeader(html.H4("User Count by Age Distribution", style={'text-align': 'center', 'font-weight': 800}), style={
+                   "border-radius": "20px 20px 0px 0px"}),
                 dcc.Dropdown(
                     id='state1-id',
                     options=[{'label': i, 'value': i} for i in df.countryNames.unique()], multi=True,
@@ -92,7 +116,8 @@ BODY = dbc.Container(html.Div([html.H1("Visualization", style={
                 "-webkit-box-shadow": "0px 0px 8px 8px #ebe9e8","padding":"1%", "margin-bottom": "30px"}),
             
             html.Br(), html.Br(),
-    dbc.CardBody(html.Div([
+    dbc.CardBody(html.Div([dbc.CardHeader(html.H4("Survey Count ", style={'text-align': 'center', 'font-weight': 800}), style={
+                   "border-radius": "20px 20px 0px 0px"}),
         dcc.Dropdown(
             id="dropdown",
             options=[{"label": x, "value": x} for x in labels],
@@ -111,7 +136,8 @@ BODY = dbc.Container(html.Div([html.H1("Visualization", style={
     ]), style={"border-radius": "20px", "box-shadow": "0px 0px 8px 8px #ebe9e8",
                "-webkit-box-shadow": "0px 0px 8px 8px #ebe9e8"}),
     html.Br(), html.Br(), html.Br(),
-    dbc.CardBody(html.Div([
+    dbc.CardBody(html.Div([dbc.CardHeader(html.H4("Survey Percentage ", style={'text-align': 'center', 'font-weight': 800}), style={
+                   "border-radius": "20px 20px 0px 0px"}),
         dcc.Dropdown(
             id='values',
             value='totalTfb',
@@ -160,30 +186,37 @@ def update_bar_graph(state_1, age_id):
 
 @app.callback(
     Output('indicator', 'figure'),
-    [Input('state-id', 'value'), Input('years-id', 'value')])
-def update_time_series(state_id, years_id):
+    [Input('country-id', 'value')])
+# def update_time_series(country_id):
+def generate_chart(country_id):
+    labels = ['female','male','Not Specified']
+    values = new_df2[country_id].to_list()
+    fig = px.pie(cf, values=values, names=labels)
+    fig.show()
+    return fig
 
     # print(dff.head())
-    data = []
-    for state in state_id:
-        for year in years_id:
-            # for indicator_id in indicator_ids:
-            dff = df.loc[(df['countryNames'] == state)]
-            trace = go.Bar(
-                x=[year],
-                y=dff[year],
-                name=state + ' ' + year + ' User Count',
-            )
-            data.append(trace)
+    # data = []
+    # for state in state_id:
+    #     for year in years_id:
+    #         # for indicator_id in indicator_ids:
+    #         dff = df.loc[(df['countryNames'] == state)]
+    #         trace = go.Bar(
+    #             x=[year],
+    #             y=dff[year],
+    #             name=state + ' ' + year + ' User Count',
+    #         )
+    #         data.append(trace)
 
-    return {
-        'data': data,
-        'layout': go.Layout(
-            xaxis={'title': 'Gender'},
-            yaxis={'title': 'User Count By Gender'},
-            barmode='group'
-        )
-    }
+    # return {
+    #     'data': data,
+    #     'layout': go.Layout(
+    #         xaxis={'title': 'Gender'},
+    #         yaxis={'title': 'User Count By Gender'},
+    #         barmode='group'
+    #     )
+    #}
+
 
 
 # Pie Chart Callback
